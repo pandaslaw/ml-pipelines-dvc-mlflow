@@ -1,9 +1,0 @@
-base:
-  random_state: 42 # random state for train/test split
-  model:
-    model_name: model.joblib
-    models_folder: models
-
-data:
-  path_train: data/train.csv
-  path_test: data/test.csv

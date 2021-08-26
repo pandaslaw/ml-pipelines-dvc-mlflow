@@ -1,0 +1,30 @@
+base:
+  random_state: 42 # random state for train/test split
+
+data:
+  path_to_train_dataset: data/train.csv
+
+featurize:
+  path_to_featured_dataset: data/processed/featured_titanic.csv
+  target_column: Survived
+
+data_split:
+  path_to_train_dataset: data/processed/train_titanic.csv
+  path_to_test_dataset: data/processed/test_titanic.csv
+  test_size: 0.3
+
+train:
+  path_to_model: models/model.joblib
+  cv: 5
+  estimator_name: logreg
+  estimators:
+    logreg: # sklearn.linear_model.LogisticRegression
+      param_grid: # params of GridSearchCV constructor
+        C: [0.001, 0.01]
+        max_iter: [100000]
+        solver: ['saga']
+
+evaluate:
+  path_to_evaluation_result: reports/model_eval_score.txt
+  path_to_confusion_matrix_png: reports/confusion_matrix.png
+  path_to_prediction_result: reports/prediction.csv
