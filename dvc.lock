@@ -1,0 +1,35 @@
+schema: '2.0'
+stages:
+  featurize:
+    cmd: python src/featurize.py --paramsFile=params.yaml
+    outs:
+    - path: data/processed/featured_titanic.csv
+      md5: 7e92144503eb140e8530244a9c1326b5
+      size: 78445
+  data_split:
+    cmd: python src/data_split.py --paramsFile=params.yaml
+    params:
+      params.yaml:
+        data_split.test_size: 0.3
+    outs:
+    - path: data/processed/test_titanic.csv
+      md5: 94a9956e4dd747f6adbdf5c36c70d8a0
+      size: 23726
+    - path: data/processed/train_titanic.csv
+      md5: fdac25ff4839a0a8d198d73bf3f70934
+      size: 54797
+  train:
+    cmd: python src/train.py --paramsFile=params.yaml
+    params:
+      params.yaml:
+        train.cv: 5
+    outs:
+    - path: models/model.joblib
+      md5: a0d800e7ae2df3bb31e7aded6b8aa02e
+      size: 3101
+  evaluate:
+    cmd: python -m src.utils src/evaluate.py --paramsFile=params.yaml
+    deps:
+    - path: models/model.joblib
+      md5: a0d800e7ae2df3bb31e7aded6b8aa02e
+      size: 3101

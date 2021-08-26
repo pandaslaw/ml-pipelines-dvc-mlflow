@@ -1,0 +1,22 @@
+stages:
+  featurize:
+    cmd: python src/featurize.py --paramsFile=params.yaml
+    outs:
+    - data/processed/featured_titanic.csv
+  data_split:
+    cmd: python src/data_split.py --paramsFile=params.yaml
+    params:
+    - data_split.test_size
+    outs:
+    - data/processed/test_titanic.csv
+    - data/processed/train_titanic.csv
+  train:
+    cmd: python src/train.py --paramsFile=params.yaml
+    params:
+    - train.cv
+    outs:
+    - models/model.joblib
+  evaluate:
+    cmd: python -m src.utils src/evaluate.py --paramsFile=params.yaml
+    deps:
+    - models/model.joblib
